@@ -14,7 +14,8 @@ const Navbar = () => {
     e.preventDefault();
     if (!search.trim()) return;
 
-    navigate(`/?search=${search}`);
+   // navigate(`/?search=${search}`);
+      navigate(`/search?query=${search}`);
     setSearch("");
   };
 
@@ -36,7 +37,7 @@ const Navbar = () => {
       {/* Center - Menu */}
       <ul className="hidden md:flex gap-8 font-medium">
         <li><Link className="hover:border-b-2 border-red-500" to="/">Home</Link></li>
-        <li><Link to="/shop">Shop</Link></li>
+        <li><Link to="/shop-page">Shop</Link></li>
         <li><Link to="/deals">Deals</Link></li>
         <li><Link to="/new">New Arrivals</Link></li>
         <li><Link to="/contact">Contact</Link></li>

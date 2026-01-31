@@ -10,6 +10,8 @@ import ProtectedRoute from './Routes/Protected'
 import MyProfile from './Pages/MyProfile'
 import MyProduct from './Pages/MyProduct'
 import ProductDetails from './Pages/ProductDetails'
+import SearchResultPage from './Pages/SearchProduct'
+import ShopPage from './Pages/ShopPage'
 
 function Applayout() {
 
@@ -24,7 +26,9 @@ function Applayout() {
         {!navHide && <Navbar/>}
         <Routes>
           <Route path='/' element={<Home/>}/>
-           <Route path='/product/:id' element={<ProductDetails/>}/>
+          <Route path="/shop-page" element={<ShopPage/>}/>
+          <Route path="/search" element={<SearchResultPage/>}/>
+          <Route path='/product/:id' element={<ProductDetails/>}/>
           <Route path='/my-products' element={<ProtectedRoute><MyProduct/></ProtectedRoute>}/>
           <Route path='/my-profile' element={<ProtectedRoute><MyProfile/></ProtectedRoute>}/>
           <Route path='/dashboard' element={ <ProtectedRoute><Dashboard/></ProtectedRoute>}/>
