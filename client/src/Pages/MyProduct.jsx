@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { myProduct } from "../Service/Productservice";
 import ProductCard from "../Component/ProductCard";
 
+
+
 const MyProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,6 +58,7 @@ const MyProduct = () => {
               key={product._id}
               product={product}
               showAddCart={false}   // 🔥 hide Add Cart
+              showThredot ={true}
             />
           ))}
         </div>

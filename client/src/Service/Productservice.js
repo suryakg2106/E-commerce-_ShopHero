@@ -45,3 +45,22 @@ export const getProductDetils = async (id) => {
   return response.data;
 };
 
+export const updateProduct = async (id, data) => {
+  const response = await Api.put(
+    `/product/edit/${id}`,
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+
+
+export const deleteProduct = async (id) => {
+  const response = await Api.delete(`/product/delete/${id}`);
+  return response.data;
+};
+

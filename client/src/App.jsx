@@ -12,6 +12,7 @@ import MyProduct from './Pages/MyProduct'
 import ProductDetails from './Pages/ProductDetails'
 import SearchResultPage from './Pages/SearchProduct'
 import ShopPage from './Pages/ShopPage'
+import UpdateProduct from './Pages/UpdateProduct'
 
 function Applayout() {
 
@@ -26,6 +27,7 @@ function Applayout() {
         {!navHide && <Navbar/>}
         <Routes>
           <Route path='/' element={<Home/>}/>
+          <Route path='product/edit/:id' element={<UpdateProduct/>}/>
           <Route path="/shop-page" element={<ShopPage/>}/>
           <Route path="/search" element={<SearchResultPage/>}/>
           <Route path='/product/:id' element={<ProductDetails/>}/>

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product, showAddCart = true }) => {
+const ProductCard = ({ product, showAddCart = true, showThredot = false }) => {
   const images = product.images?.length
     ? product.images
     : [{ url: "https://via.placeholder.com/150" }];
 
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const [current, setCurrent] = useState(0);
 
   // 🔹 Auto slide
@@ -25,6 +27,10 @@ const ProductCard = ({ product, showAddCart = true }) => {
     setCurrent((current + 1) % images.length);
   };
 
+  const handleDelete = (id) => {
+    alert("deleted " + id);
+  };
+
   return (
     <div
       onClick={() => navigate(`/product/${product._id}`)}
@@ -39,11 +45,55 @@ const ProductCard = ({ product, showAddCart = true }) => {
           className="h-36 object-contain transition duration-500"
         />
 
+        {/* 🔹 THREE DOT (ONLY WHEN showThredot = true) */}
+        {showThredot && (
+          <div ref={menuRef} className="absolute top-2 right-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpen((prev) => !prev);
+              }}
+              className="bg-black/40 text-white w-7 h-7 rounded-full
+              flex items-center justify-center"
+            >
+              ⋮
+            </button>
+
+            {menuOpen && (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="absolute right-0 mt-2 w-28
+                bg-white rounded-md shadow-lg border text-sm"
+              >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/product/edit/${product._id}`);
+                  }}
+                  className="w-full text-left px-3 py-2 hover:bg-gray-100"
+                >
+                  ✏️ Edit
+                </button>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(product._id);
+                  }}
+                  className="w-full text-left px-3 py-2 hover:text-red-600"
+                >
+                  🗑 Delete
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* 🔹 Left Arrow */}
         {images.length > 1 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();   // 🔥 IMPORTANT
+              e.stopPropagation();
               prevImage();
             }}
             className="absolute left-2 bg-black/40 text-white w-7 h-7
@@ -57,7 +107,7 @@ const ProductCard = ({ product, showAddCart = true }) => {
         {images.length > 1 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();   // 🔥 IMPORTANT
+              e.stopPropagation();
               nextImage();
             }}
             className="absolute right-2 bg-black/40 text-white w-7 h-7
@@ -84,11 +134,8 @@ const ProductCard = ({ product, showAddCart = true }) => {
           {product.name}
         </h3>
 
-        <p className="text-xs text-gray-500">
-          {product.category}
-        </p>
+        <p className="text-xs text-gray-500">{product.category}</p>
 
-        {/* 🔹 Price */}
         <div className="flex items-center gap-2 mt-2">
           {product.discountPrice ? (
             <>
@@ -106,13 +153,9 @@ const ProductCard = ({ product, showAddCart = true }) => {
           )}
         </div>
 
-        {/* 🔹 Add Cart Button */}
         {showAddCart && (
           <button
-            onClick={(e) => {
-              e.stopPropagation();   // 🔥 IMPORTANT
-              // add to cart logic here
-            }}
+            onClick={(e) => e.stopPropagation()}
             className="w-full mt-3 bg-red-500 text-white py-2
             text-sm rounded-lg font-medium hover:bg-red-600 transition"
           >
