@@ -68,8 +68,6 @@ export const CreateProduct = async (req, res) => {
 };
 
 
-
-
 // All product view 
 
 export const getAllProduct = async (req, res) => {
@@ -81,29 +79,23 @@ export const getAllProduct = async (req, res) => {
       maxPrice,
       search,
       page = 1,
-      limit = 8,
+      limit = 28,
     } = req.query;
 
     let query = {};
 
-    // 🔹 Brand filter (case-insensitive)
     if (brand) {
       query.brand = { $regex: `^${brand}$`, $options: "i" };
     }
 
-    // 🔹 Category filter
     if (category) {
       query.category = category;
     }
-
-    // 🔹 Price filter (normal price)
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = Number(minPrice);
       if (maxPrice) query.price.$lte = Number(maxPrice);
     }
-
-    // 🔹 Search filter
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: "i" } },
@@ -113,7 +105,6 @@ export const getAllProduct = async (req, res) => {
       ];
     }
 
-    // 🔹 Pagination
     const skip = (Number(page) - 1) * Number(limit);
 
     const products = await ProductSchema.find(query)
@@ -124,7 +115,6 @@ export const getAllProduct = async (req, res) => {
 
     const total = await ProductSchema.countDocuments(query);
 
-    // 🔹 Image URL frontend-ready
     const formattedProducts = products.map((p) => ({
       ...p._doc,
       images: p.images.map((img) => ({
@@ -217,7 +207,6 @@ export const updateProduct = async (req, res) => {
     product.stock = stock ?? product.stock;
     product.isFeatured = isFeatured ?? product.isFeatured;
 
-    // 🔹 Handle images (optional)
     if (req.files && req.files.length > 0) {
       const newImages = req.files.map((file) => ({
         url: `/uploads/${file.filename}`,
@@ -308,6 +297,38 @@ export const ProductDeatils = async (req, res) => {
 };
 
 
+// Delete Product
+export const deleteProduct = async (req, res) => {
+  try {
+    const product = await ProductSchema.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    if (product.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
+
+    await ProductSchema.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 
 
