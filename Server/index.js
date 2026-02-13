@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import Router from "./Routes/AuthRouter.js";
 import Prouter from "./Routes/ProductRouter.js";
 import { ConnectDB } from "./Config/ConnectDB.js";
+import Cartrouter from "./Routes/CartRouter.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", Router);
 app.use("/", Prouter);
+app.use("/",Cartrouter);
 
 const PORT = process.env.PORT || 4001;
 app.listen(PORT, () => {

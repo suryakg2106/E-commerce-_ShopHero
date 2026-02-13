@@ -1,6 +1,7 @@
 import ProductSchema from "../Models/ProductModel.js";
 
 
+
 // Create a product
 export const CreateProduct = async (req, res) => {
   try {
@@ -329,6 +330,7 @@ export const deleteProduct = async (req, res) => {
     });
   }
 };
+
 
 
 

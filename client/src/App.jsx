@@ -13,6 +13,12 @@ import ProductDetails from './Pages/ProductDetails'
 import SearchResultPage from './Pages/SearchProduct'
 import ShopPage from './Pages/ShopPage'
 import UpdateProduct from './Pages/UpdateProduct'
+import Contact from './Pages/Contact'
+import Footer from './Component/Footer'
+import { Toaster } from 'react-hot-toast'
+import GoCartPage from './Pages/GoCartPage'
+
+
 
 function Applayout() {
 
@@ -24,11 +30,14 @@ function Applayout() {
     <>
     <div>
       <main>
+        <Toaster position="top-right" />
         {!navHide && <Navbar/>}
         <Routes>
           <Route path='/' element={<Home/>}/>
+          <Route path='/cart' element={<ProtectedRoute><GoCartPage/></ProtectedRoute>}/>
           <Route path='product/edit/:id' element={<UpdateProduct/>}/>
           <Route path="/shop-page" element={<ShopPage/>}/>
+          <Route path='/contact' element={<Contact/>}/>
           <Route path="/search" element={<SearchResultPage/>}/>
           <Route path='/product/:id' element={<ProductDetails/>}/>
           <Route path='/my-products' element={<ProtectedRoute><MyProduct/></ProtectedRoute>}/>
@@ -38,6 +47,8 @@ function Applayout() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/register' element={<Register/>}/>
         </Routes>
+        {!navHide &&  <Footer/>}
+       
       </main>
     </div>
     </>

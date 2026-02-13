@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Login as LoginApi, Register as RegisterApi, AuthMe, Logout as LogoutApi } from "../Service/AuthService";
+import { mergeGuestCart } from "../Service/AddCartService.js";
 
 const AuthContext = createContext();
 
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       await LoginApi(cred);       
       const currentUser = await AuthMe(); 
       setUser(currentUser.user);
+      await mergeGuestCart();
       navigate("/");             
     } catch (error) {
       throw new Error("Login failed please input valid data!",error);
